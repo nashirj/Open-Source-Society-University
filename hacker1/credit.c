@@ -22,12 +22,9 @@ Visa numbers all start with 4
 
 
 /*
-
-
 You can use arithmetic to loop through the numbers and sum them at the same time.
 Recall that 123456%10 = 6 which leads on to (123456/10) %10 = 5 and 123456/100 = 1234
 Maybe that will give you a hint.
-
 */
 
 int main(void)
@@ -35,12 +32,8 @@ int main(void)
     
     long long cardNum;
     
-    do
-    {
-        printf("Number: ");
-        //test input 1234123412341234
-        cardNum = GetLongLong();
-    }while((cardNum > 5600000000000000) || (cardNum < 4000000000000));
+    printf("Number: ");
+    cardNum = GetLongLong();
     
     int cardLength;
     int cardVal; //0 = visa, 1 = amex, 2 = mastercard;
@@ -48,26 +41,26 @@ int main(void)
     if (cardNum >= 4000000000000 && cardNum < 5000000000000)
     {
         cardLength = 13;
+        //VISA
         cardVal = 0;
-        printf("short VISA\n");
     }
     else if (cardNum >= 4000000000000000 && cardNum < 5000000000000000)
     {
         cardLength = 16;
+        //VISA
         cardVal = 0;
-        printf("long VISA\n");
     }
     else if ((cardNum >= 340000000000000 && cardNum < 350000000000000) || (cardNum >= 370000000000000 && cardNum < 380000000000000))
     {
         cardLength = 15;
+        //AMEX
         cardVal = 1;
-        printf("AMEX\n");
     }
     else if (cardNum >= 5100000000000000 && cardNum < 5600000000000000)
     {
         cardLength = 16;
+        //MASTERCARD
         cardVal = 2;
-        printf("MASTERCARD\n");
     }
     else
     {
@@ -75,46 +68,62 @@ int main(void)
         return 0;
     }
 
-    int sum0 = 0, sum1 = 0, doubled_sum, unaltered_sum;
+    int doubled_sum = 0, unaltered_sum = 0;
     
     //get sum of every other digit starting with 2nd to last
     for (int counter = 1; counter < cardLength; counter += 2)
     {
-        printf("number %i: ", counter);
+        //set place value for modulo
         long divisor = pow(10, counter);
-        printf("%lli\n", ((cardNum/divisor)%10));
-        sum0 += ((cardNum/divisor)%10);
+        if (((cardNum/divisor)%10) < 5)
+        {
+            doubled_sum += ((cardNum/divisor)%10) * 2;
+        }
+        else if (((cardNum/divisor)%10) > 4)
+        {
+            int temp, ones, tens;
+            temp = ((cardNum/divisor)%10);
+            temp *= 2;
+            ones = temp%10;
+            tens = temp/10;
+            doubled_sum += tens + ones;
+        }
     }
-    doubled_sum = sum0*2;
-    printf("%i\n", doubled_sum);
     
     //get sum of every other digit starting with last
-    for (int counter = 0; counter < 15; counter += 2)
+    for (int counter = 0; counter < cardLength; counter += 2)
     {
-        printf("number %i: ", counter);
         long divisor = pow(10, counter);
-        printf("%lli\n", ((cardNum/divisor)%10));
-        sum1 += ((cardNum/divisor)%10);
+        unaltered_sum += ((cardNum/divisor)%10);
     }
-    unaltered_sum = sum1;
-    printf("%i\n", unaltered_sum);
     
     int total = unaltered_sum + doubled_sum;
-    printf("%i", total);
-    
-    switch(cardVal)
-    {
-        case 0:
-            printf("")
-    }
- 
     
     if (total%10 == 0)
     {
-        printf("you did it!\n");
+        switch(cardVal)
+        {
+            case 0:
+            {
+                printf("VISA\n");
+                break;
+            }
+            case 1:
+            {
+                printf("AMEX\n");
+                break;
+            }
+            case 2:
+            {
+                printf("MASTERCARD\n");
+                break;
+            }
+        }
+    }
+    else
+    {
+        printf("INVALID\n");
     }
     
     return 0;
-    
-    
 }
