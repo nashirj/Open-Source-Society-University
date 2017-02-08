@@ -8,6 +8,7 @@ string get_initials(string s);
 int main(void)
 {
     string name, initials;
+    
     name = get_string();
     
     initials = get_initials(name);
@@ -20,18 +21,20 @@ int main(void)
 
 string get_initials(string s)
 {
-    //initialize looping variables
-    int n = strlen(s);
-    char temp[n];
-    
     //make all the letters capital
+    int n = strlen(s);
+    
     for (int i = 0; i < n; i++)
     {
         s[i] = toupper(s[i]);
     }
     
     //get the initials
-    temp[0] = s[0];
+    char temp[n];
+    
+    if (s[0] != ' ')
+        temp[0] = s[0];
+        
     for (int k = 0, j = 1; k < n; k++)
     {
         if (s[k] == ' ')
