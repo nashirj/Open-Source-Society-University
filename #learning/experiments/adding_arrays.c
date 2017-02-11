@@ -6,14 +6,16 @@
 int main(void)
 {
     
-    string text = "hi there";
+    string text = get_string();
     
     int k = 3;
     int j = 2;
     printf("%c\n", text[k]);
     printf("%c\n", text[j]);
-    printf("%c\n", text[k] + j);
-    text[k] += 48;
-    printf("%c\n", text[k]);
+    text[k] += 4;
+    printf("%i\n", text[k]);
+    
+    
+    //printf("%c\n", text[k] + j);
     
 }
