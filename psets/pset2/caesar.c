@@ -8,7 +8,7 @@ int string_to_int(string s);
 
 int power(int base, int exponent);
 
-string cipher(string p_text, int key);
+string cipher(string text, int key);
 
 
 int main(int argc, string argv[])
@@ -16,12 +16,12 @@ int main(int argc, string argv[])
     //input check!
     if (argc != 2)
     {
-        printf("please specify 1 command line argument!\n");
+        printf("Usage: ./caesar k\n");
         return 1;
     }
     
     //local variables
-    string text;
+    string p_text, c_text;
     int k;
     
     //convert command line (string) input to int
@@ -29,12 +29,12 @@ int main(int argc, string argv[])
     
     //get text from user
     printf("plaintext: ");
-    text = get_string();
+    p_text = get_string();
     
     //call cipher function
-    text = cipher(text, k);
+    c_text = cipher(p_text, k);
     
-    printf("ciphertext: %s\n", text);
+    printf("ciphertext: %s\n", c_text);
     
     return 0;
 }
@@ -44,50 +44,74 @@ int main(int argc, string argv[])
 
 int string_to_int(string s)
 {
-    //use technique from credit card number function to convert to an int
+    int result = 0;
     
-    int n = strlen(s);
-    int converted_string[n];
-    
-    for (int i = 0, exp; i < n; i++)
+    for (int i = 0, n = strlen(s); i < n; i++)
     {
-        exp = (power(10, n-i-1));
-        converted_string = s[i] * exp;
-        
-        /*
-        int i = (int)temp[i];
-        i -= 48;
-        
-        //ASCII conversion -> '0' = 48
-        
-        //convert k to an integer <= 26
-        k %= 26;
-        printf("%i\n", i);
-        */
+        //conversion from char to int -> ASCII value of '0' = 48
+        s[i] -= 48;
+        //convert each number in the array to the power of ten corresponding to its decimal place
+        result += s[i] * power(10, n-i-1);
     }
     
-    return converted_string;
+    return result;
 }
 
 
 
 int power(int base, int exponent)
 {
+    int result = 1;
     
+    for (int i = 0; i < exponent; i++)
+    {
+        result *= base;
+    }
+    
+    return result;
 }
 
 
 
-string cipher(string p_text, int key)
+
+string cipher(string text, int key)
 {
+   
+    //convert result (k) to an integer <= 26
+    key %= 26;
+    
     //shift every character in string 'k' places
-    
-    string c_text;
-    
-    for (int i = 0, n = strlen(p_text); i < n; i++)
+    for (int i = 0, n = strlen(text); i < n; i++)
     {
-        s[i] = s[i+k];
+        if ((text[i] >= 'A') && (text[i] <= 'Z'))
+        {
+            //prevent conversion from going out of bounds
+            text[i] -= 26;
+            //convert to ciphertext
+            text[i] += key;
+            
+            //check if converted character is in correct range
+            if (text[i] < 'A')
+            {
+                text[i] += 26;
+            }
+        }
+        else if ((text[i] >= 'a') && (text[i] <= 'z'))
+        {
+            //prevent conversion from going out of bounds
+            text[i] -= 26;
+            //convert to ciphertext
+            text[i] += key;
+            
+            //check if converted character is the correct case
+            if (text[i] < 'a')
+            {
+                text[i] += 26;
+            }
+        }
+        //else
+            //do nothing
     }
     
-    return c_text;
+    return text;
 }
