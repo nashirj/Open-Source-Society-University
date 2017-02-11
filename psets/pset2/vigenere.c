@@ -4,21 +4,18 @@
 #include <ctype.h>
 
 
-
-string keyword_to_keynumber(string s);
-
 string cipher(string text, string key);
 
 
 int main(int argc, string argv[])
 {
-    //input check!
+    //checks to ensure that only one keyword was entered
     if (argc != 2)
     {
         printf("Usage: ./caesar k\n");
         return 1;
     }
-    //2nd input check!
+    //checks to make sure keyword is comprised solely of letters
     for (int i = 0, n = strlen(argv[1]); i < n; i++)
     {
         if (argv[1][i] < 'A' || argv[1][i] > 'z')
@@ -29,46 +26,18 @@ int main(int argc, string argv[])
     }
     
     //local variables
-    string p_text, c_text, k;
-    
-    //convert command line (string) input to int
-    k = keyword_to_keynumber(argv[1]);
+    string plain_text, cipher_text, k = argv[1];
     
     //get text from user
     printf("plaintext: ");
-    p_text = get_string();
+    plain_text = get_string();
     
     //call cipher function
-    c_text = cipher(p_text, k);
+    cipher_text = cipher(plain_text, k);
     
-    printf("ciphertext: %s\n", c_text);
+    printf("ciphertext: %s\n", cipher_text);
     
     return 0;
-}
-
-
-
-
-string keyword_to_keynumber(string s)
-{
-    int a = strlen(s);
-    printf("%i\n", a);
-    
-    for (int i = 0, n = strlen(s); i < n; i++)
-    {
-        //make case uniform
-        s[i] = toupper(s[i]);
-        //conversion from char to int -> ASCII value of 'A' = 65
-        //cipher format -> A = 0, B = 1, etc...
-        s[i] -= 'A';
-        printf("%i\n", s[i]);
-        printf("%i\n", n);
-    }
-    
-    a = strlen(s);
-    printf("%i\n", a);
-    
-    return s;
 }
 
 
@@ -87,22 +56,34 @@ alphabetical character in p; you must not yet advance to the next
 character in k.
 */
     
+    //convert keyword into numeric value
+    //declare array for storing converted string
+    int key_length = strlen(key);
+    int key_val[key_length];
+    
+    for (int i = 0; i < key_length; i++)
+    {
+        //make case uniform
+        key[i] = toupper(key[i]);
+        //conversion from char to int -> ASCII value of 'A' = 65
+        //cipher format -> A = 0, B = 1, etc...
+        key_val[i] = key[i] - 'A';
+    }
+    
+    
     //shift every character in string 'k' places
-    for (int i = 0, j = 0, k = 0, n = strlen(text), size = strlen(key); i < n; i++)
+    for (int i = 0, j = 0, n = strlen(text); i < n; i++)
     {
         //prevent indice for key from going out of bounds
-        if (j >= size)
+        if (j >= key_length)
             j = 0;
-            
-        k = key[j];
-        printf("%i", k);
         
         if ((text[i] >= 'A') && (text[i] <= 'Z'))
         {
             //prevent conversion from going out of bounds
             text[i] -= 26;
             //convert to ciphertext
-            text[i] += key[j];
+            text[i] += key_val[j];
             
             //check if converted character is in correct range
             if (text[i] < 'A')
@@ -116,7 +97,7 @@ character in k.
             //prevent conversion from going out of bounds
             text[i] -= 26;
             //convert to ciphertext
-            text[i] += key[j];
+            text[i] += key_val[j];
             
             //check if converted character is the correct case
             if (text[i] < 'a')
