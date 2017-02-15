@@ -3,11 +3,10 @@
 #include <stdio.h>
 #include <cs50.h>
 #include <string.h>
-//need these libraries to use the crypt function
+//need this library to use the crypt function
 #include <unistd.h>
 
-
-char crack(string hash);
+string crack(string hash);
 
 int main(int argc, string argv[])
 {
@@ -19,57 +18,80 @@ int main(int argc, string argv[])
     }
     
     //get hashed password
-    string hash = argv[1];
-    printf("%s\n", hash);
-    
-    //encode password
-    hash = crypt(argv[1], "50");
-    printf("%s\n", hash);
+    string input = argv[1];
     
     //crack password
-    char cracked = crack(hash);
+    string cracked = crack(input);
     
     //print password
-    printf("%c\n", cracked);
+    printf("%s\n", cracked);
     
     return 0;
 }
 
-char crack(string hash)
+string crack(string hash)
 {
-    char password[1];
-    string match;
-    
-    //brute force - iterate through a 4 dimensional array of all possible alphabetic combinations
+    //brute force - iterate through a 4 dimensional
+    //array of all possible alphabetic combinations
     //start with 1 character, move up to 2, etc...
     
-    //1 letter password
-    for (char i = 'A'; i <= 'Z'; i++)
+    
+    //LOWER CASE 1 LETTER PASSWORDS
+    1letterpass();
+    char pass1[2];
+    char temp = 'A';
+    char *cp = &temp;
+    
+    printf("%c\n", temp);
+    *cp = 'G';
+    printf("%c\n", temp);
+    pass1[0] = *cp;
+    
+    printf("%c\n", pass1[0]);
+    printf("%s\n", pass1);
+    
+    return NULL;
+    
+    /*
+    for (int i = 0; i < 26; i++)
     {
-        password[0] = i;
-        match = crypt(&i, "50");
+        pass1[0] = temp;
+        printf("%c\n", pass1[0]);
+        printf("%s\n", pass1);
+        
+        match = crypt(pass1, "50");
         printf("%s\n", match);
-        printf("%s\n", hash);
+        
         if (match == hash)
         {
             printf("match1\n");
-            return i;
+            return pass1;
         }
-            
+        
+        temp++;
     }
-    for (char j = 'a'; j <= 'z'; j++)
+    //UPPER CASE 1 LETTER PASSWORDS
+    temp = 'a';
+    for (int j = 0; j <= 26; j++)
     {
-        password[0] = j;
-        match = crypt(&j, "50");
+        pass1[0] = temp;
+        
+        printf("%c\n", pass1[0]);
+        printf("%s\n", pass1);
+        
+        match = crypt(pass1, "50");
+        printf("%s\n", match);
+        
         if (match == hash)
         {
             printf("match2\n");
-            return j;
+            return pass1;
         }
+        
+        temp++;
     }
     
-    //2 letter password
+    */
     
-    
-    return password[0];
+    return NULL;
 }

@@ -25,19 +25,31 @@ string get_initials(string s)
     int n = strlen(s);
     
     for (int i = 0; i < n; i++)
-    {
         s[i] = toupper(s[i]);
-    }
     
     //get the initials
-    char temp[n];
     
+    char temp[n];
+    int start;
+    
+    //get first initial
+    
+    //if the first element is a char, assign it to the
+    //initials array, start assigning initals at the
+    //second array element
     if (s[0] != ' ')
-        temp[0] = s[0];
-        
-    for (int k = 0, j = 1; k < n; k++)
     {
-        if (s[k] == ' ')
+        temp[0] = s[0];
+        start = 1;
+    }
+    //if the first element is a space, start assigning
+    //initials at the first array element
+    else
+        start = 0;
+    
+    for (int k = 0, j = start; k < n; k++)
+    {
+        if (s[k] == ' ' && s[k+1] != ' ')
         {
             temp[j] = s[k+1];
             j++;
