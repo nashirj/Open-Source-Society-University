@@ -8,6 +8,6 @@
 
 int main(void)
 {
-    string crack = "a";
+    string crack = "BaB";
     printf("%s\n", crypt(crack, "50"));
 }

@@ -8,8 +8,16 @@
 
 int main(void)
 {
-    string pass = "A";
+    string pass = "c";
     printf("%s\n", pass);
+    
+    
+    char c[1];
+    for (int i = 'A'; i <= 'Z'; i++)
+    {
+        c[0] = i;
+        printf("%c", c[0]);
+    }
     
     string swag = crypt(pass, "50");
     printf("%s\n", swag);

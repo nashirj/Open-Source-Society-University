@@ -9,9 +9,9 @@
 int main(void)
 {
     string hash = get_string();
-string swag = get_string();
+    string swag = get_string();
 
-int n1 = strlen(hash), n2 = strlen(swag), count = 0;
+    int n1 = strlen(hash), n2 = strlen(swag), count = 0;
     if (n1 == n2)
     {
         for (int i = 0; i < n1; i++)
